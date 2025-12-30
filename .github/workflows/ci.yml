@@ -1,0 +1,38 @@
+name: FastAPI CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      MONGO_URI: mongodb://localhost:27017
+      DB_NAME: idea_app
+      SECRET_KEY: test_secret_key
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Verify app imports (critical)
+        run: |
+          python -c "from app.main import app; print('App loaded')"
+
+      - name: Run tests
+        run: |
+          python -m pytest -v

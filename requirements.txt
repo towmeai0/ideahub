@@ -1,0 +1,8 @@
+uvicorn
+fastapi
+motor
+pydantic-settings
+python-jose
+passlib[bcrypt]
+email-validator
+pytest
